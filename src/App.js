@@ -59,7 +59,7 @@ class App extends React.Component {
   render() {
     return (
       <Router>
-        <div>
+        <div className="app">
           <Route exact path='/' render={() => (<PageLibrary books={this.state.books} shelves={shelves} moveBook={this.moveBook}/>)} />
           <Route path='/search' render={() => (<PageSearch libraryBooks={this.state.books} addBook={this.addBook}/>)} />
         </div>
