@@ -1,14 +1,25 @@
 import React from 'react';
 import { Link } from "react-router-dom";
+import BookShelf from './BookShelf'
 
 const PageLibrary = (props) => {
+  var {books, shelves, moveBook} = props;
+
   return (
-    <div>
-      <h2>Library</h2>
-        <ol>
-          {props.books.map((book) => (<li key={book.id}>{book.title}</li>))}
-        </ol>
-      <Link to='/search'>Search</Link>
+    <div className="list-books">
+      <div className="list-books-title">
+        <h1>MyReads</h1>
+      </div>
+      <div className="list-books-content">
+        <div>
+          {shelves.map(shelf => (
+            <BookShelf shelf={shelf} books={books.filter((book) => book.shelf === shelf.value)} moveBook={moveBook}/>
+          ))}
+        </div>
+      </div>
+      <div className="open-search">
+        <Link to='/search'>Add a book</Link>
+      </div>
     </div>
   )
 }

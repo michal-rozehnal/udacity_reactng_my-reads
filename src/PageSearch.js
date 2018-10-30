@@ -9,7 +9,7 @@ class PageSearch extends Component {
   }
 
   searchBook = (query) => {
-    BooksAPI.search(query, 20).then((result) => (
+    BooksAPI.search(query, 20).then((result) => {
       this.setState({
         foundBooks: result.map((book) => ({
           id: book.id,
@@ -19,7 +19,16 @@ class PageSearch extends Component {
           shelf: book.shelf
         }))
       })
-    ))
+    })
+  }
+
+  addBook = (book, shelf) => {
+    this.props.addBook(book, shelf)
+
+    book.shelf = shelf;
+    this.setState((current) => ({
+      books: current.foundBooks.filter((b) => (b.id !== book.id)).concat([book])
+    }))
   }
 
   render() {
@@ -32,7 +41,7 @@ class PageSearch extends Component {
               </div>
           </div>
           <div className="search-books-results">
-              <BookList shelf='none' books={this.state.foundBooks} bookAction={this.props.addBook}/>
+              <BookList shelf='none' books={this.state.foundBooks} bookAction={this.addBook}/>
           </div>
       </div>
     )

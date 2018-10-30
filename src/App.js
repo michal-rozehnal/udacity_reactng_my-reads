@@ -5,15 +5,39 @@ import { BrowserRouter as Router, Route } from "react-router-dom";
 import PageLibrary from './PageLibrary';
 import PageSearch from './PageSearch';
 
+const shelves = [
+  {
+    name: 'Currently Reading',
+    value: 'currentlyReading'
+  },
+  {
+    name: 'Want to Read',
+    value: 'wantToRead'
+  },
+  {
+    name: 'Read',
+    value: 'read'
+  }
+]
+
 class App extends React.Component {
   state = {
     books: []
   }
 
-  addBook = (book) => {
-    BooksAPI.update(book, 'read').then((result) => {
+  addBook = (book, shelf) => {
+    BooksAPI.update(book, shelf).then((result) => {
       this.setState((current) => ({
         books: current.books.concat([book])
+      }))
+    })
+  }
+
+  moveBook = (book, shelf) => {
+    BooksAPI.update(book, shelf).then((result) => {
+      book.shelf = shelf
+      this.setState((current) => ({
+        books: current.books.filter((b) => (b.id !== book.id)).concat([book])
       }))
     })
   }
@@ -36,8 +60,8 @@ class App extends React.Component {
     return (
       <Router>
         <div>
-          <Route exact path='/' render={() => (<PageLibrary books={this.state.books}/>)} />
-          <Route path='/search' render={() => (<PageSearch addBook={this.addBook}/>)} />
+          <Route exact path='/' render={() => (<PageLibrary books={this.state.books} shelves={shelves} moveBook={this.moveBook}/>)} />
+          <Route path='/search' render={() => (<PageSearch libraryBooks={this.state.books} addBook={this.addBook}/>)} />
         </div>
       </Router>
     )
