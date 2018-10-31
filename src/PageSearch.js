@@ -8,16 +8,20 @@ class PageSearch extends Component {
     foundBooks: []
   }
 
-  searchBook = (query) => {
+  searchBook = (query, libraryBooks) => {
     BooksAPI.search(query, 20).then((result) => {
       this.setState({
-        foundBooks: result.map((book) => ({
-          id: book.id,
-          cover: 'url('+book.imageLinks.thumbnail+')',
-          title: book.title,
-          author: book.authors ? book.authors.join('; ') : null,
-          shelf: book.shelf
-        }))
+        foundBooks: result.map((book) => {
+          var libraryBook = libraryBooks.find((b) => (b.id == book.id))
+
+          return {
+            id: book.id,
+            cover: 'url('+book.imageLinks.thumbnail+')',
+            title: book.title,
+            author: book.authors ? book.authors.join('; ') : null,
+            shelf: libraryBook ? libraryBook.shelf : 'none'
+          }
+        })
       })
     })
   }
@@ -25,9 +29,12 @@ class PageSearch extends Component {
   addBook = (book, shelf) => {
     this.props.addBook(book, shelf)
 
-    book.shelf = shelf;
+    // create deep copy
+    var foundedBooksNew = JSON.parse(JSON.stringify(this.state.foundBooks))
+    foundedBooksNew.find((b) => (b.id == book.id)).shelf = shelf
+
     this.setState((current) => ({
-      books: current.foundBooks.filter((b) => (b.id !== book.id)).concat([book])
+      foundBooks: foundedBooksNew
     }))
   }
 
@@ -37,7 +44,7 @@ class PageSearch extends Component {
         <div className="search-books-bar">
               <Link to='/' className='close-search'>Close</Link>
               <div className="search-books-input-wrapper">
-                  <input type="text" placeholder="Search by title or author" onChange={(e) => this.searchBook(e.target.value)} />
+                  <input type="text" placeholder="Search by title or author" onChange={(e) => this.searchBook(e.target.value, this.props.libraryBooks)} />
               </div>
           </div>
           <div className="search-books-results">

@@ -27,9 +27,18 @@ class App extends React.Component {
 
   addBook = (book, shelf) => {
     BooksAPI.update(book, shelf).then((result) => {
-      this.setState((current) => ({
-        books: current.books.concat([book])
-      }))
+      this.setState((current) => {
+        book.shelf = shelf
+        if (book.shelf === 'none') {
+          return {
+            books: current.books.concat([book])
+          }
+        } else {
+          return {
+            books: current.books.filter((b) => (b.id !== book.id)).concat([book])
+          }
+        }
+      })
     })
   }
 

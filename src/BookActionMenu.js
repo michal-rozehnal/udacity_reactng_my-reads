@@ -11,7 +11,7 @@ const BookActionMenu = (props) => {
 
   return (
     <div className="book-shelf-changer">
-      <select value={shelf} onChange={(e) => onBookAction(book, shelf, e.target.value)}>
+      <select value={book.shelf} onChange={(e) => onBookAction(book, shelf, e.target.value)}>
         <option value="move" disabled>Move to...</option>
         <option value="currentlyReading">Currently Reading</option>
         <option value="wantToRead">Want to Read</option>

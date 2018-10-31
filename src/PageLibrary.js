@@ -4,7 +4,7 @@ import BookShelf from './BookShelf'
 
 const PageLibrary = (props) => {
   var {books, shelves, moveBook} = props;
-
+  
   return (
     <div className="list-books">
       <div className="list-books-title">
