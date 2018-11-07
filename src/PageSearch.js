@@ -2,6 +2,8 @@ import React, { Component } from 'react'
 import { Link } from "react-router-dom";
 import * as BooksAPI from './BooksAPI'
 import BookList from './BookList'
+import PropTypes from 'prop-types'
+import { libraryShelves} from './AppSettings'
 
 class PageSearch extends Component {
   state = {
@@ -12,7 +14,7 @@ class PageSearch extends Component {
     BooksAPI.search(query, 20).then((result) => {
       this.setState({
         foundBooks: result.map((book) => {
-          var libraryBook = libraryBooks.find((b) => (b.id == book.id))
+          var libraryBook = libraryBooks.find((b) => (b.id === book.id))
 
           return {
             id: book.id,
@@ -31,7 +33,7 @@ class PageSearch extends Component {
 
     // create deep copy
     var foundedBooksNew = JSON.parse(JSON.stringify(this.state.foundBooks))
-    foundedBooksNew.find((b) => (b.id == book.id)).shelf = shelf
+    foundedBooksNew.find((b) => (b.id === book.id)).shelf = shelf
 
     this.setState((current) => ({
       foundBooks: foundedBooksNew
@@ -53,6 +55,17 @@ class PageSearch extends Component {
       </div>
     )
   }
+}
+
+PageSearch.propTypes = {
+  libraryBooks: PropTypes.arrayOf(PropTypes.exact({
+    id: PropTypes.string.isRequired,
+    cover: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string,
+    shelf: PropTypes.oneOf(libraryShelves.map(s => s.value)).isRequired
+  })).isRequired,
+  addBook: PropTypes.func.isRequired
 }
 
 export default PageSearch

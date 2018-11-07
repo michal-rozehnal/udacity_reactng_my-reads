@@ -1,4 +1,6 @@
 import React from 'react'
+import PropTypes from 'prop-types'
+import { shelves } from './AppSettings'
 
 const BookActionMenu = (props) => {
   var {book, shelf, bookAction} = props;
@@ -13,13 +15,24 @@ const BookActionMenu = (props) => {
     <div className="book-shelf-changer">
       <select value={book.shelf} onChange={(e) => onBookAction(book, shelf, e.target.value)}>
         <option value="move" disabled>Move to...</option>
-        <option value="currentlyReading">Currently Reading</option>
-        <option value="wantToRead">Want to Read</option>
-        <option value="read">Read</option>
-        <option value="none">None</option>
+        {shelves.map(shelf => (
+          <option key={shelf.value} value={shelf.value}>{shelf.name}</option>
+        ))}
       </select>
     </div>
   )
+}
+
+BookActionMenu.propTypes = {
+  book: PropTypes.exact({
+    id: PropTypes.string.isRequired,
+    cover: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string,
+    shelf: PropTypes.oneOf(shelves.map(s => s.value)).isRequired
+  }).isRequired,
+  shelf: PropTypes.oneOf(shelves.map(s => s.value)).isRequired,
+  bookAction: PropTypes.func.isRequired
 }
 
 export default BookActionMenu

@@ -1,5 +1,7 @@
 import React from 'react'
 import BookList from './BookList'
+import PropTypes from 'prop-types'
+import { shelves, libraryShelves} from './AppSettings'
 
 const BookShelf = (props) => {
   var {shelf, books, moveBook} = props;
@@ -12,6 +14,21 @@ const BookShelf = (props) => {
     	</div>
     </div>
   )
+}
+
+BookShelf.propTypes = {
+  books: PropTypes.arrayOf(PropTypes.exact({
+    id: PropTypes.string.isRequired,
+    cover: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string,
+    shelf: PropTypes.oneOf(shelves.map(s => s.value)).isRequired
+  })).isRequired,
+  shelf: PropTypes.exact({
+    value: PropTypes.oneOf(libraryShelves.map(s => s.value)).isRequired,
+    name: PropTypes.string.isRequired
+  }).isRequired,
+  moveBook: PropTypes.func.isRequired
 }
 
 export default BookShelf

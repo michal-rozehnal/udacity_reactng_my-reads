@@ -4,21 +4,7 @@ import './App.css'
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import PageLibrary from './PageLibrary';
 import PageSearch from './PageSearch';
-
-const shelves = [
-  {
-    name: 'Currently Reading',
-    value: 'currentlyReading'
-  },
-  {
-    name: 'Want to Read',
-    value: 'wantToRead'
-  },
-  {
-    name: 'Read',
-    value: 'read'
-  }
-]
+import { libraryShelves } from './AppSettings'
 
 class App extends React.Component {
   state = {
@@ -69,7 +55,7 @@ class App extends React.Component {
     return (
       <Router>
         <div className="app">
-          <Route exact path='/' render={() => (<PageLibrary books={this.state.books} shelves={shelves} moveBook={this.moveBook}/>)} />
+          <Route exact path='/' render={() => (<PageLibrary books={this.state.books} shelves={libraryShelves} moveBook={this.moveBook}/>)} />
           <Route path='/search' render={() => (<PageSearch libraryBooks={this.state.books} addBook={this.addBook}/>)} />
         </div>
       </Router>

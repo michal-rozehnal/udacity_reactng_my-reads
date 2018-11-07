@@ -1,10 +1,12 @@
 import React from 'react';
 import { Link } from "react-router-dom";
 import BookShelf from './BookShelf'
+import PropTypes from 'prop-types'
+import { shelves, libraryShelves} from './AppSettings'
 
 const PageLibrary = (props) => {
   var {books, shelves, moveBook} = props;
-  
+
   return (
     <div className="list-books">
       <div className="list-books-title">
@@ -13,7 +15,7 @@ const PageLibrary = (props) => {
       <div className="list-books-content">
         <div>
           {shelves.map(shelf => (
-            <BookShelf shelf={shelf} books={books.filter((book) => book.shelf === shelf.value)} moveBook={moveBook}/>
+            <BookShelf key={shelf.value} shelf={shelf} books={books.filter((book) => book.shelf === shelf.value)} moveBook={moveBook}/>
           ))}
         </div>
       </div>
@@ -22,6 +24,21 @@ const PageLibrary = (props) => {
       </div>
     </div>
   )
+}
+
+PageLibrary.propTypes = {
+  books: PropTypes.arrayOf(PropTypes.exact({
+    id: PropTypes.string.isRequired,
+    cover: PropTypes.string.isRequired,
+    title: PropTypes.string.isRequired,
+    author: PropTypes.string,
+    shelf: PropTypes.oneOf(shelves.map(s => s.value)).isRequired
+  })).isRequired,
+  shelves: PropTypes.arrayOf(PropTypes.exact({
+    value: PropTypes.oneOf(libraryShelves.map(s => s.value)).isRequired,
+    name: PropTypes.string.isRequired
+  })).isRequired,
+  moveBook: PropTypes.func.isRequired
 }
 
 export default PageLibrary
