@@ -11,21 +11,31 @@ class PageSearch extends Component {
   }
 
   searchBook = (query, libraryBooks) => {
-    BooksAPI.search(query, 20).then((result) => {
-      this.setState({
-        foundBooks: result.map((book) => {
-          var libraryBook = libraryBooks.find((b) => (b.id === book.id))
+    if (query) {
+      BooksAPI.search(query.trim(), 20).then((result) => {
+        if (!result || !Array.isArray(result)) {
+          return
+        }
 
-          return {
-            id: book.id,
-            cover: 'url('+book.imageLinks.thumbnail+')',
-            title: book.title,
-            author: book.authors ? book.authors.join('; ') : null,
-            shelf: libraryBook ? libraryBook.shelf : 'none'
-          }
+        this.setState({
+          foundBooks: result.map((book) => {
+            var libraryBook = libraryBooks.find((b) => (b.id === book.id))
+
+            return {
+              id: book.id,
+              cover: book.imageLinks.thumbnail,
+              title: book.title,
+              author: book.authors ? book.authors.join('; ') : null,
+              shelf: libraryBook ? libraryBook.shelf : 'none'
+            }
+          })
         })
       })
-    })
+    } else {
+      this.setState({
+        foundBooks: []
+      })
+    }
   }
 
   addBook = (book, shelf) => {
