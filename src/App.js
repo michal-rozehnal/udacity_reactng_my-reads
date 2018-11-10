@@ -44,7 +44,7 @@ class App extends React.Component {
           id: book.id,
           cover: book.imageLinks && 'url('+book.imageLinks.thumbnail+')',
           title: book.title,
-          author: book.authors.join('; '),
+          author: book.authors && book.authors.join('; '),
           shelf: book.shelf
         }))
       })

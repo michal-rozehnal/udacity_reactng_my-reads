@@ -25,7 +25,7 @@ class PageSearch extends Component {
               id: book.id,
               cover: book.imageLinks && 'url('+book.imageLinks.thumbnail+')',
               title: book.title,
-              author: book.authors ? book.authors.join('; ') : null,
+              author: book.authors && book.authors.join('; '),
               shelf: libraryBook ? libraryBook.shelf : 'none'
             }
           })
