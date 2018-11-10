@@ -20,7 +20,7 @@ const BookList = (props) => {
 BookList.propTypes = {
   books: PropTypes.arrayOf(PropTypes.exact({
     id: PropTypes.string.isRequired,
-    cover: PropTypes.string.isRequired,
+    cover: PropTypes.string,
     title: PropTypes.string.isRequired,
     author: PropTypes.string,
     shelf: PropTypes.oneOf(shelves.map(s => s.value)).isRequired

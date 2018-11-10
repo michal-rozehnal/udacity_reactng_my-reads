@@ -23,7 +23,7 @@ class PageSearch extends Component {
 
             return {
               id: book.id,
-              cover: book.imageLinks.thumbnail,
+              cover: book.imageLinks && 'url('+book.imageLinks.thumbnail+')',
               title: book.title,
               author: book.authors ? book.authors.join('; ') : null,
               shelf: libraryBook ? libraryBook.shelf : 'none'
@@ -70,7 +70,7 @@ class PageSearch extends Component {
 PageSearch.propTypes = {
   libraryBooks: PropTypes.arrayOf(PropTypes.exact({
     id: PropTypes.string.isRequired,
-    cover: PropTypes.string.isRequired,
+    cover: PropTypes.string,
     title: PropTypes.string.isRequired,
     author: PropTypes.string,
     shelf: PropTypes.oneOf(libraryShelves.map(s => s.value)).isRequired

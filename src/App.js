@@ -42,7 +42,7 @@ class App extends React.Component {
       this.setState({
         books: result.map((book) => ({
           id: book.id,
-          cover: 'url('+book.imageLinks.thumbnail+')',
+          cover: book.imageLinks && 'url('+book.imageLinks.thumbnail+')',
           title: book.title,
           author: book.authors.join('; '),
           shelf: book.shelf
